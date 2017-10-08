@@ -23,11 +23,14 @@ urlpatterns = [
 
 import datetime
 from apscheduler.schedulers.blocking import BlockingScheduler
-
+import string
+import random
 sched=BlockingScheduler()
 
 @sched.scheduled_job("cron",second="*/20")
 def mytask():
-	print "now is '%s' " %datetime.datetime.now()
+#	print "now is '%s' " %datetime.datetime.now()
+	salt=''.join(random.sample(string.ascii_letters+string.digits,8))
+	print salt
 
 sched.start()
