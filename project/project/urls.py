@@ -23,14 +23,39 @@ urlpatterns = [
 
 import datetime
 from apscheduler.schedulers.blocking import BlockingScheduler
+import logging
 import string
 import random
+from app import models #
+from django.conf import settings
+
 sched=BlockingScheduler()
 
+logging.basicConfig()
+
 @sched.scheduled_job("cron",second="*/20")
+
+#models.Salts.objects.create(content="ABCDEFGH") ##
+
+#log=logging.getLogger('apscheduler.executors.default')
+#	log.setLevel(logging.INFO)
+#	fmt=logging.Formatter('%(levelname)s:%(name)s:%(message)s')
+#	h=logging.StreamHandler()
+#	h.setFormatter(fmt)
+#	log.addHandler(h)
+
+#logging.basicConfig()
+
 def mytask():
 #	print "now is '%s' " %datetime.datetime.now()
+#	logging.basicConfig()
+#	models.Salts.objects.create(content="ABCDEFGH") ##
 	salt=''.join(random.sample(string.ascii_letters+string.digits,8))
 	print salt
+	settings.SALT=salt
+	print settings.SALT	
+#	models.Salts.objects.filter(pk=1).update(content=salt)
+#	result=models.Salts.objects.filter(pk=1).first()
+#	print result
 
 sched.start()
