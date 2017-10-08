@@ -20,3 +20,14 @@ urlpatterns = [
     url(r'^app/',include('app.urls')),
     url(r'^admin/', admin.site.urls),
 ]
+
+import datetime
+from apscheduler.schedulers.blocking import BlockingScheduler
+
+sched=BlockingScheduler()
+
+@sched.scheduled_job("cron",second="*/20")
+def mytask():
+	print "now is '%s' " %datetime.datetime.now()
+
+sched.start()
